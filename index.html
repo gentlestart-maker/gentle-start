@@ -353,8 +353,14 @@
       if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){input.focus();input.style.borderColor="#e8a08b";return;}
       var btn=f.querySelector("button"); btn.disabled=true; btn.textContent="…";
       var honey=f.querySelector("[name=_honey]");
-      fetch(SUB_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},
-        body:JSON.stringify({email:email,subscriber_email:email,_subject:"Gentle Start new waitlist signup",_template:"basic",_honey:honey?honey.value:"",page:location.href,submitted_at:new Date().toISOString()})})
+      var params=new URLSearchParams();
+      params.append("email",email);
+      params.append("subscriber_email",email);
+      params.append("_subject","Gentle Start new waitlist signup");
+      params.append("_template","basic");
+      if(honey)params.append("_honey",honey.value);
+      params.append("page",location.href);
+      fetch(SUB_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded","Accept":"application/json"},body:params.toString()})
        .then(function(r){return r.json().catch(function(){});})
        .then(function(){f.style.display="none";if(okEl)okEl.style.display="block";try{localStorage.setItem("gs_sub",email);}catch(e){}})
        .catch(function(){btn.disabled=false;btn.textContent="Join";});

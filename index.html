@@ -354,7 +354,7 @@
       var btn=f.querySelector("button"); btn.disabled=true; btn.textContent="…";
       var honey=f.querySelector("[name=_honey]");
       fetch(SUB_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},
-        body:JSON.stringify({email:email,_subject:"Gentle Start — new waitlist signup",_template:"table",_honey:honey?honey.value:"",source:location.href})})
+        body:JSON.stringify({email:email,"Subscriber email":email,_subject:"Gentle Start 🌱 new waitlist signup",_template:"table",_honey:honey?honey.value:"",page:location.href,submitted_at:new Date().toISOString()})})
        .then(function(r){return r.json().catch(function(){});})
        .then(function(){f.style.display="none";if(okEl)okEl.style.display="block";try{localStorage.setItem("gs_sub",email);}catch(e){}})
        .catch(function(){btn.disabled=false;btn.textContent="Join";});

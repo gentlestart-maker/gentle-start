@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Gentle Start — one tiny step at a time</title>
+<meta name="description" content="A zero-guilt tool that breaks an 'impossible' task into one tiny step you can't fail. Free, no signup, works in your browser." />
+<style>
+  :root{
+    --cream:#faf6f0; --card:#ffffff; --ink:#2f342c; --muted:#8b9085;
+    --sage:#9dc4a8; --sage-deep:#5e9272; --sage-ink:#3f6b52;
+    --coral:#e8a08b; --line:#eee8df; --shadow:0 12px 40px rgba(80,90,70,.08);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:radial-gradient(1200px 600px at 50% -10%,#f3efe7,var(--cream));
+    color:var(--ink); line-height:1.55; min-height:100vh;
+    display:flex; justify-content:center;
+  }
+  .wrap{width:100%;max-width:560px;padding:34px 22px 60px;}
+  .brand{text-align:center;color:var(--sage-deep);font-weight:700;letter-spacing:.3px;font-size:15px;margin-bottom:18px}
+  .screen{display:none;animation:fade .35s ease}
+  .screen.on{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  h1{font-size:30px;line-height:1.25;text-align:center;margin:6px 0 10px;font-weight:700;letter-spacing:-.5px}
+  .sub{text-align:center;color:var(--muted);font-size:16px;margin:0 auto 26px;max-width:420px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:var(--shadow)}
+  .inputrow{display:flex;gap:10px}
+  input[type=text]{
+    flex:1;border:1.5px solid var(--line);background:#fcfbf8;border-radius:14px;
+    padding:15px 16px;font-size:16px;font-family:inherit;color:var(--ink);outline:none;
+  }
+  input:focus{border-color:var(--sage)}
+  .btn{border:none;cursor:pointer;font-family:inherit;font-size:16px;font-weight:600;border-radius:14px;
+    padding:15px 20px;background:var(--sage);color:#fff;transition:transform .08s,background .2s}
+  .btn:active{transform:scale(.98)}
+  .btn.big{width:100%;padding:18px;font-size:18px;margin-top:8px;background:var(--sage-deep)}
+  .btn.ghost{background:transparent;color:var(--sage-ink);border:1.5px solid #dce8df;background:#f4f9f5}
+  .linkbtn{background:none;border:none;color:var(--muted);font-family:inherit;font-size:15px;cursor:pointer;padding:6px}
+  .or{text-align:center;color:var(--muted);font-size:14px;margin:22px 0 12px}
+  .chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+  .chip{border:1.5px solid #dfe7df;background:#fff;color:var(--sage-ink);border-radius:999px;
+    padding:10px 16px;font-size:15px;cursor:pointer;font-family:inherit}
+  .chip:hover{background:#f3f8f4}
+  .energy{display:flex;flex-direction:column;gap:12px}
+  .opt{display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;
+    border:1.5px solid var(--line);background:#fff;border-radius:18px;padding:18px 20px;cursor:pointer;font-family:inherit}
+  .opt:hover{border-color:var(--sage);background:#f7fbf8}
+  .opt b{font-size:19px}
+  .opt small{display:block;color:var(--muted);font-size:14px;margin-top:2px}
+  .radio{width:24px;height:24px;border-radius:50%;border:2px solid #cfd6cf;flex:none}
+  .meta{display:flex;justify-content:space-between;color:var(--muted);font-size:14px;margin-bottom:14px}
+  .bar{height:6px;background:var(--line);border-radius:99px;overflow:hidden;margin:0 0 22px}
+  .bar > i{display:block;height:100%;background:var(--sage);border-radius:99px;transition:width .4s}
+  .stepcard{text-align:center}
+  .kicker{color:var(--muted);font-size:14px;margin-bottom:8px}
+  .step{font-size:25px;font-weight:700;line-height:1.35;letter-spacing:-.4px}
+  .micro{background:#f4f9f5;border:1px dashed #cfe0d3;border-radius:14px;padding:12px 14px;margin-top:10px;
+    color:var(--sage-ink);font-size:15px;text-align:left}
+  .actions{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+  .timer{font-size:64px;font-weight:700;text-align:center;letter-spacing:1px;margin:8px 0 4px;font-variant-numeric:tabular-nums}
+  .presets{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:14px 0}
+  .preset{border:1.5px solid #dfe7df;background:#fff;color:var(--sage-ink);border-radius:999px;padding:8px 14px;font-family:inherit;font-size:14px;cursor:pointer}
+  .preset.on{background:var(--sage-deep);color:#fff;border-color:var(--sage-deep)}
+  .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .fb{font-size:30px;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:10px 16px;cursor:pointer}
+  .foot{text-align:center;color:#b6bbb2;font-size:12.5px;margin-top:28px}
+  .back{background:none;border:none;color:var(--muted);font-family:inherit;font-size:15px;cursor:pointer;margin-bottom:10px}
+  .hidden{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">🌿 Gentle Start</div>
+
+  <section class="screen on" id="s-home">
+    <h1>What are you stuck on right now?</h1>
+    <p class="sub">Whatever it is — big or tiny — type it in. We'll find the smallest possible first step together.</p>
+    <div class="card">
+      <div class="inputrow">
+        <input id="task" type="text" placeholder="type it here…" autocomplete="off" />
+        <button class="btn" id="startBtn">Start →</button>
+      </div>
+    </div>
+    <div class="or">or pick something common:</div>
+    <div class="chips" id="chips"></div>
+    <div class="or">—</div>
+    <button class="btn ghost big" id="bdEntry">🧍 Body-double with me <span style="font-weight:400;font-size:14px">— a quiet focus timer, just you together</span></button>
+    <div class="foot">A productivity support tool, not medical advice.</div>
+  </section>
+
+  <section class="screen" id="s-energy">
+    <button class="back" id="enBack">← change task</button>
+    <h1>How's your energy today?</h1>
+    <p class="sub">There's no wrong answer. We'll match the pace to you.</p>
+    <div class="energy card">
+      <button class="opt" data-e="low"><span><b>Low</b><small>That's okay — we'll take it extra tiny today.</small></span><span class="radio"></span></button>
+      <button class="opt" data-e="medium"><span><b>Medium</b><small>A gentle pace — small steps, one at a time.</small></span><span class="radio"></span></button>
+      <button class="opt" data-e="high"><span><b>High</b><small>You've got some fuel today — let's use it well.</small></span><span class="radio"></span></button>
+    </div>
+  </section>
+
+  <section class="screen" id="s-step">
+    <div class="meta"><span id="stepOf">step 1 of 5</span><span id="doneOf">0 done</span></div>
+    <div class="bar"><i id="bar" style="width:0%"></i></div>
+    <div class="card stepcard">
+      <div class="kicker">just this one thing:</div>
+      <div class="step" id="stepText">…</div>
+      <div id="microWrap" class="hidden"></div>
+      <div class="actions">
+        <button class="btn big" id="didBtn">✓ I did it</button>
+        <button class="btn ghost" id="hardBtn">Still too hard → break it smaller</button>
+        <button class="linkbtn" id="endBtn">End for now — stopping is completely okay</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen" id="s-done">
+    <h1 id="doneTitle">You started. That's the whole point. 🌱</h1>
+    <p class="sub" id="doneSub">Did this help you actually start?</p>
+    <div class="row" style="margin:18px 0">
+      <button class="fb" data-f="yes">🙂</button>
+      <button class="fb" data-f="meh">😐</button>
+      <button class="fb" data-f="love">😁</button>
+    </div>
+    <p class="sub hidden" id="thanks" style="color:var(--sage-deep)">Thank you — that helps a lot.</p>
+    <div class="actions" style="max-width:340px;margin:24px auto 0">
+      <button class="btn big" id="againBtn">Start another thing</button>
+      <button class="btn ghost" id="doneBd">🧍 Body-double for a bit</button>
+    </div>
+  </section>
+
+  <section class="screen" id="s-bd">
+    <button class="back" id="bdBack">← back</button>
+    <h1>I'm right here with you.</h1>
+    <p class="sub">Pick a length. No streak to defend — stopping early is always fine.</p>
+    <div class="card">
+      <div class="timer" id="timer">15:00</div>
+      <div class="presets" id="presets"></div>
+      <div class="row">
+        <button class="btn" id="bdToggle">Start</button>
+        <button class="btn ghost" id="noiseBtn">🔇 brown noise off</button>
+      </div>
+      <div class="row" style="margin-top:10px">
+        <button class="linkbtn" id="bdStop">End gently</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  function $(id){return document.getElementById(id)}
+  function show(id){
+    var all=document.querySelectorAll(".screen");
+    for(var i=0;i<all.length;i++)all[i].classList.remove("on");
+    $(id).classList.add("on");
+    window.scrollTo(0,0);
+  }
+
+  var CHIPS=["Take a shower","Wash the dishes","Do the laundry","Reply to a message","Make a phone call","Tidy up"];
+  var chipBox=$("chips");
+  CHIPS.forEach(function(c){
+    var b=document.createElement("button");
+    b.className="chip"; b.textContent=c;
+    b.onclick=function(){$("task").value=c; goEnergy();};
+    chipBox.appendChild(b);
+  });
+
+  var CATS=[
+    {k:["shower","bath"], place:"the bathroom", obj:"the shower tap",
+      acts:["Take off one sock, then the other","Step one foot into the shower","Turn on warm water and just stand under it for 30 seconds"]},
+    {k:["dish"], place:"the kitchen sink", obj:"the tap",
+      acts:["Put one single dish into the sink","Pick up the sponge and hold it","Wash just that one item, then rinse it"]},
+    {k:["laundry","clothes","washing"], place:"the laundry basket", obj:"one piece of clothing",
+      acts:["Pick up three items of clothing","Carry them to the machine and open the door","Put them in and press start"]},
+    {k:["reply","message","email","text","respond"], place:"your device", obj:"the one conversation",
+      acts:["Open the app and find that one thread","Put your fingers on the keyboard","Type one honest sentence and press send"]},
+    {k:["phone","call"], place:"your phone", obj:"the contact's name",
+      acts:["Open the contact and tap the call button","Hold the phone to your ear","Just say hello — that's the whole hard part"]},
+    {k:["tidy","clean","room","mess","organi"], place:"the messiest surface", obj:"the nearest out-of-place item",
+      acts:["Pick up the nearest item and put it where it belongs","Grab a bag and drop in three things","Clear just this one surface, then stop"]},
+    {k:["exercise","run","workout","gym","walk"], place:"the door", obj:"the shoes that are already there",
+      acts:["Put on the shoes you already own","Stand up and walk to the door","Step outside and walk to the end of the street"]},
+    {k:["work","code","write","study","report","laptop","computer"], place:"your desk", obj:"the one open file",
+      acts:["Open the laptop and that one file","Type one sentence or one line","Keep going for just two minutes"]}
+  ];
+  function categorize(t){
+    t=(t||"").toLowerCase();
+    for(var i=0;i<CATS.length;i++){
+      for(var j=0;j<CATS[i].k.length;j++) if(t.indexOf(CATS[i].k[j])>=0) return CATS[i];
+    }
+    return null;
+  }
+  function buildSteps(task,energy){
+    var c=categorize(task);
+    var place=c?c.place:"where this task happens";
+    var obj=c?c.obj:"the first thing you need";
+    var acts=c?c.acts:["Do the smallest visible piece of it","Do one more small piece","Notice that you've already begun"];
+    var ramp=[
+      "Take one slow breath and sit up where you are",
+      "Plant both feet flat on the floor and slowly stand up",
+      "Walk over to "+place,
+      "Place one hand on "+obj
+    ];
+    if(energy==="low") return ramp.concat(acts).slice(0,7);
+    if(energy==="medium") return [ramp[1], ramp[2], ramp[3], acts[0], acts[1]+" — then keep going gently"];
+    return ["Stand up and go to "+place, "Put your hands on "+obj, acts[1], acts[2]];
+  }
+  var MICRO=[
+    "Pause. Take one slow breath in and out.",
+    "Move just one hand toward it — that's all for now.",
+    "Do only the first half. You're allowed to stop right after."
+  ];
+
+  var state={task:"",energy:"medium",steps:[],i:0,done:0,micro:false};
+  function goEnergy(){
+    var v=$("task").value.trim();
+    if(!v){$("task").focus();return;}
+    state.task=v; show("s-energy");
+  }
+  $("startBtn").onclick=goEnergy;
+  $("task").addEventListener("keydown",function(e){if(e.key==="Enter")goEnergy();});
+  $("enBack").onclick=function(){show("s-home")};
+  document.querySelectorAll(".opt").forEach(function(b){
+    b.onclick=function(){
+      state.energy=b.getAttribute("data-e");
+      state.steps=buildSteps(state.task,state.energy);
+      state.i=0;state.done=0;state.micro=false;
+      show("s-step");renderStep();
+    };
+  });
+  function renderStep(){
+    var n=state.steps.length;
+    $("stepOf").textContent="step "+(state.i+1)+" of "+n;
+    $("doneOf").textContent=state.done+" done";
+    $("bar").style.width=Math.round((state.i/n)*100)+"%";
+    $("stepText").textContent=state.steps[state.i];
+    var mw=$("microWrap");
+    if(state.micro){
+      mw.classList.remove("hidden");
+      mw.innerHTML="<div class='micro'>Too much? Then just this → <b>"+MICRO[state.i%MICRO.length]+"</b></div>";
+    }else mw.classList.add("hidden");
+  }
+  $("didBtn").onclick=function(){
+    state.done++; state.i++; state.micro=false;
+    if(state.i>=state.steps.length){
+      $("bar").style.width="100%";
+      show("s-done");
+    }else renderStep();
+  };
+  $("hardBtn").onclick=function(){state.micro=!state.micro;renderStep();};
+  $("endBtn").onclick=function(){
+    $("doneTitle").textContent="Pausing is completely okay. 🌿";
+    $("doneSub").textContent="You did "+state.done+" step"+(state.done===1?"":"s")+" — that's "+(state.done?"real progress":"a good try")+", not failure.";
+    show("s-done");
+  };
+  $("againBtn").onclick=function(){$("task").value="";show("s-home")};
+  document.querySelectorAll(".fb").forEach(function(b){
+    b.onclick=function(){
+      try{localStorage.setItem("gs_fb_"+b.getAttribute("data-f"),Date.now());}catch(e){}
+      $("thanks").classList.remove("hidden");
+    };
+  });
+
+  var PRESETS=[5,15,25,50,75,90], chosen=15, left=chosen*60, run=null, noiseOn=false, actx;
+  var pbox=$("presets");
+  PRESETS.forEach(function(m){
+    var b=document.createElement("button");
+    b.className="preset"+(m===chosen?" on":""); b.textContent=m+" min";
+    b.onclick=function(){
+      chosen=m;left=m*60;stopT();paint();
+      document.querySelectorAll(".preset").forEach(function(x){x.classList.remove("on")});
+      b.classList.add("on");
+    };
+    pbox.appendChild(b);
+  });
+  function paint(){
+    var mm=Math.floor(left/60),ss=left%60;
+    $("timer").textContent=(mm<10?"0":"")+mm+":"+(ss<10?"0":"")+ss;
+    $("bdToggle").textContent=run?"Pause":(left===chosen*60?"Start":"Resume");
+  }
+  function stopT(){if(run){clearInterval(run);run=null;}}
+  function tick(){
+    left--;
+    if(left<=0){stopT();left=0;paint();$("timer").textContent="done 🌱";return;}
+    paint();
+  }
+  $("bdToggle").onclick=function(){
+    if(run){stopT();paint();}
+    else{run=setInterval(tick,1000);paint();}
+  };
+  $("bdEntry").onclick=function(){show("s-bd");paint();};
+  $("doneBd").onclick=function(){show("s-bd");paint();};
+  $("bdBack").onclick=function(){stopT();show("s-home")};
+  $("bdStop").onclick=function(){stopT();left=chosen*60;paint();show("s-home");};
+
+  var noiseSrc=null;
+  function makeNoise(){
+    var AC=window.AudioContext||window.webkitAudioContext; actx=new AC();
+    var len=actx.sampleRate*2, buf=actx.createBuffer(1,len,actx.sampleRate), d=buf.getChannelData(0),last=0;
+    for(var i=0;i<len;i++){var w=Math.random()*2-1;last=(last+0.02*w)/1.02;d[i]=last*3.2;}
+    noiseSrc=actx.createBufferSource();noiseSrc.buffer=buf;noiseSrc.loop=true;noiseSrc.connect(actx.destination);noiseSrc.start();
+  }
+  $("noiseBtn").onclick=function(){
+    noiseOn=!noiseOn;
+    if(noiseOn){
+      try{if(!actx)makeNoise();else actx.resume();}catch(e){}
+      $("noiseBtn").textContent="🔊 brown noise on";
+    }else{
+      try{actx.suspend();}catch(e){}
+      $("noiseBtn").textContent="🔇 brown noise off";
+    }
+  };
+  paint();
+})();
+</script>
+</body>
+</html>

@@ -69,6 +69,15 @@
   .foot{text-align:center;color:#b6bbb2;font-size:12.5px;margin-top:28px}
   .back{background:none;border:none;color:var(--muted);font-family:inherit;font-size:15px;cursor:pointer;margin-bottom:10px}
   .hidden{display:none!important}
+  .sub{margin-top:18px;background:#f4f9f5;border:1px solid #dce8df;border-radius:16px;padding:16px 18px;text-align:left}
+  .sub h4{margin:0 0 4px;font-size:15.5px;color:var(--sage-ink)}
+  .sub p{margin:0 0 12px;color:var(--muted);font-size:13.5px;line-height:1.5}
+  .subform{display:flex;gap:8px}
+  .subform input{flex:1;min-width:0;border:1.5px solid #dfe7df;border-radius:11px;padding:12px 13px;font-size:15px;font-family:inherit;outline:none;background:#fff}
+  .subform input:focus{border-color:var(--sage)}
+  .subform button{border:none;background:var(--sage-deep);color:#fff;border-radius:11px;padding:0 18px;font-family:inherit;font-weight:600;font-size:15px;cursor:pointer;white-space:nowrap}
+  .subok{color:var(--sage-deep);font-size:14px;margin-top:10px;display:none;line-height:1.5}
+  .hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;opacity:0;pointer-events:none}
 </style>
 </head>
 <body>
@@ -88,6 +97,16 @@
     <div class="chips" id="chips"></div>
     <div class="or">—</div>
     <button class="btn ghost big" id="bdEntry">🧍 Body-double with me <span style="font-weight:400;font-size:14px">— a quiet focus timer, just you together</span></button>
+    <div class="sub">
+      <h4>One gentle update, that's it</h4>
+      <p>We're just getting started. Leave your email for occasional kind updates — no spam, no streak pressure, unsubscribe anytime.</p>
+      <form class="subform" novalidate>
+        <input type="email" class="sub-email" placeholder="you@example.com" autocomplete="email" aria-label="Email address" />
+        <button type="submit">Join</button>
+        <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" />
+      </form>
+      <div class="subok">🌱 Thank you — you're on the list. Be gentle with yourself today.</div>
+    </div>
     <div class="foot">A productivity support tool, not medical advice.</div>
   </section>
 
@@ -129,6 +148,16 @@
     <div class="actions" style="max-width:340px;margin:24px auto 0">
       <button class="btn big" id="againBtn">Start another thing</button>
       <button class="btn ghost" id="doneBd">🧍 Body-double for a bit</button>
+    </div>
+    <div class="sub" style="max-width:340px;margin:18px auto 0">
+      <h4>Want a little help tomorrow too?</h4>
+      <p>Leave your email and we'll send the occasional gentle nudge. No spam, no guilt, ever.</p>
+      <form class="subform" novalidate>
+        <input type="email" class="sub-email" placeholder="you@example.com" autocomplete="email" aria-label="Email address" />
+        <button type="submit">Join</button>
+        <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" />
+      </form>
+      <div class="subok">🌱 Thank you — you're on the list.</div>
     </div>
   </section>
 
@@ -315,6 +344,22 @@
       $("noiseBtn").textContent="🔇 brown noise off";
     }
   };
+  var SUB_ENDPOINT="https://formsubmit.co/ajax/15635482217@163.com";
+  document.querySelectorAll(".subform").forEach(function(f){
+    f.addEventListener("submit",function(e){
+      e.preventDefault();
+      var input=f.querySelector(".sub-email"), email=(input.value||"").trim();
+      var okEl=f.parentElement.querySelector(".subok");
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){input.focus();input.style.borderColor="#e8a08b";return;}
+      var btn=f.querySelector("button"); btn.disabled=true; btn.textContent="…";
+      var honey=f.querySelector("[name=_honey]");
+      fetch(SUB_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},
+        body:JSON.stringify({email:email,_subject:"Gentle Start — new waitlist signup",_template:"table",_honey:honey?honey.value:"",source:location.href})})
+       .then(function(r){return r.json().catch(function(){});})
+       .then(function(){f.style.display="none";if(okEl)okEl.style.display="block";try{localStorage.setItem("gs_sub",email);}catch(e){}})
+       .catch(function(){btn.disabled=false;btn.textContent="Join";});
+    });
+  });
   paint();
 })();
 </script>
